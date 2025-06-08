@@ -1172,7 +1172,7 @@ class MapView extends NativeBridgeComponent(
         );
       }
     } else {
-      console.warn('Mapbox not ready.');
+      console.log('Mapbox not ready.');
     }
 
     if (mapView == null) {
