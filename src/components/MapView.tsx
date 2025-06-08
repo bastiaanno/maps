@@ -1165,25 +1165,26 @@ class MapView extends NativeBridgeComponent(
       } else {
         mapView = (
           <RNMBXMapView {...props} {...callbacks}>
-            {this.props.children}
+            {props.children}
           </RNMBXMapView>
         );
       }
     }
 
     if (mapView == null) {
-        mapView = (
-          <RNMBXMapView {...props} {...callbacks}>
-            {this.props.children}
-          </RNMBXMapView>
-        )
+      console.warn('mapView is null.');
+      mapView = (
+        <RNMBXMapView {...props} {...callbacks}>
+          {this.props.children}
+        </RNMBXMapView>
+      );
     }
 
     return (
       <View
         onLayout={this._onLayout}
-        style={this.props.style}
-        testID={mapView ? undefined : this.props.testID}
+        style={props.style}
+        testID={mapView ? undefined : props.testID}
       >
         {mapView}
       </View>
