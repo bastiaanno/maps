@@ -1161,14 +1161,18 @@ class MapView extends NativeBridgeComponent(
     let mapView = null;
     if (this.state.isReady) {
       if (props._nativeImpl) {
+        console.log('Loading custom mapview instance');
         mapView = <props._nativeImpl {...props} {...callbacks} />;
       } else {
+        console.log('Loading default mapbox instance.');
         mapView = (
           <RNMBXMapView {...props} {...callbacks}>
             {props.children}
           </RNMBXMapView>
         );
       }
+    } else {
+      console.warn('Mapbox not ready.');
     }
 
     if (mapView == null) {
