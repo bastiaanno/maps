@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ReactNode } from 'react';
+import { isMapboxLayerComponent } from '@rnmapbox/maps/src/utils/isMapboxLayerComponent';
+import React from 'react';
 import {
   findNodeHandle,
   Platform,
@@ -70,14 +71,14 @@ export function runNativeMethod<ReturnType = NativeArg>(
 }
 
 export function cloneReactChildrenWithProps(
-  children: ReactNode,
+  children: Parameters<typeof React.Children.map>[0],
   propsToAdd: { [key: string]: string } = {},
 ) {
   if (!children) {
     return null;
   }
 
-  let foundChildren: typeof children[] | null = null;
+  let foundChildren = null;
 
   if (!Array.isArray(children)) {
     foundChildren = [children];
@@ -90,15 +91,12 @@ export function cloneReactChildrenWithProps(
     if (!React.isValidElement(child)) {
       return child;
     }
-
-    if (child.type === React.Fragment) {
-      // If the child is a Fragment, return it without adding props
-      return child;
+    if (isMapboxLayerComponent(child.type)) {
+      return React.cloneElement(child, propsToAdd)
     }
-
-    // Otherwise, clone and add props
-    return React.cloneElement(child, propsToAdd);
-  });
+    return child;
+  }
+  );
 }
 
 export function resolveImagePath(imageRef: ImageSourcePropType): string {
